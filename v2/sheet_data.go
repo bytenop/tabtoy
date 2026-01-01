@@ -66,6 +66,10 @@ func (self *DataSheet) exportRowMajor(file *File, dataModel *model.DataModel, da
 			continue
 
 		} else {
+			data := self.GetCellData(self.Row, 0)
+			if strings.HasPrefix(data, "#") {
+				continue
+			}
 
 			//已经碰过空行, 这里又碰到数据, 说明有人为隔出的空行, 做warning提醒, 防止数据没导出
 			if meetEmptyLine && !warningAfterEmptyLineDataOnce {
