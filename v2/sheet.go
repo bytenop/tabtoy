@@ -1,8 +1,9 @@
 package v2
 
 import (
-	"github.com/tealeg/xlsx"
 	"strings"
+
+	"github.com/tealeg/xlsx"
 )
 
 // 描述一个表单
@@ -36,7 +37,8 @@ func (self *Sheet) GetCellData(cursor, index int) string {
 		r.AddCell()
 	}
 
-	return strings.TrimSpace(r.Cells[index].Value)
+	v := strings.TrimSpace(r.Cells[index].Value)
+	return strings.ReplaceAll(v, "_x000D_", "")
 }
 
 func (self *Sheet) GetCellDataAsNumeric(cursor, index int) string {
