@@ -2,6 +2,7 @@ package printer
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -77,6 +78,13 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 	return stream
 }
 
+func formatTableKey(key string) string {
+	if match, _ := regexp.MatchString(`^\w+$`, key); match {
+		return key
+	}
+	return fmt.Sprintf(`["%s"]`, key)
+}
+
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
 	stream.Printf("	%s = {\n", tab.LocalFD.Name)
@@ -91,9 +99,9 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 		for rootFieldIndex, node := range r.Nodes {
 
 			if node.IsRepeated {
-				stream.Printf("%s = { ", node.Name)
+				stream.Printf("%s = { ", formatTableKey(node.Name))
 			} else {
-				stream.Printf("%s = ", node.Name)
+				stream.Printf("%s = ", formatTableKey(node.Name))
 			}
 
 			// 普通值
